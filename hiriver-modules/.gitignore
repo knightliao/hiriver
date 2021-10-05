@@ -114,3 +114,5 @@ lib.tar.gz
 
 .DS_Store
 .ser
+data
+/data/channel_0000
