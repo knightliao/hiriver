@@ -8,7 +8,6 @@
     <packaging>pom</packaging>
     <version>1.2.6</version>
     <name>hiriver-modules</name>
-    <url>http://maven.apache.org</url>
 
     <modules>
         <module>mysql-proto</module>
@@ -374,14 +373,17 @@
 
     <organization>
         <name>KNIGHT</name>
-        <url>https://github.com/knightliao/generic-dao</url>
+        <url>https://github.com/knightliao/hiriver-modules</url>
     </organization>
 
     <scm>
-        <url>scm:git:git@github.com:knightliao/generic-dao</url>
-        <connection>scm:git:git@github.com:knightliao/generic-dao</connection>
+        <url>scm:git:git@github.com:knightliao/hiriver-modules</url>
+        <connection>scm:git:git@github.com:knightliao/hiriver-modules</connection>
         <tag>vpaas</tag>
     </scm>
+
+    <url>https://github.com/knightliao/hiriver-modules</url>
+    <description>.</description>
 
     <profiles>
         <profile>
