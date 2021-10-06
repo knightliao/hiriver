@@ -1,5 +1,6 @@
 package com.hiriver.unbiz.msyql;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hiriver.unbiz.mysql.lib.BinlogStreamBlockingTransportImpl;
@@ -13,6 +14,8 @@ import com.hiriver.unbiz.mysql.lib.protocol.binlog.event.BaseRowEvent;
 import com.hiriver.unbiz.mysql.lib.protocol.binlog.exp.ReadTimeoutExp;
 
 public class DumpTestCase {
+
+    @Ignore
     @Test
     public void testDump() {
         BinlogStreamBlockingTransportImpl tran = new BinlogStreamBlockingTransportImpl();
@@ -21,58 +24,59 @@ public class DumpTestCase {
         tran.setUserName("repl");
         tran.setPassword("pass123");
         tran.setServerId(55);
-//        tran.setCheckSum(true);
-        tran.setTableFilter(new TableFilter(){
+        //        tran.setCheckSum(true);
+        tran.setTableFilter(new TableFilter() {
 
             @Override
             public boolean filter(String dbName, String tableName) {
                 return dbName.equals("repl");
             }
-            
+
         });
         // tran.open();
         tran.setTransportConfig(new TransportConfig());
-        
-//         BinlogFileBinlogPosition pos = new BinlogFileBinlogPosition("mysql-bin.000001",400L);
-//        GTIDSet gtidSet = new GTIDSet("8c80613e-ac5b-11e5-b170-148044d6636f:7");
+
+        //         BinlogFileBinlogPosition pos = new BinlogFileBinlogPosition("mysql-bin.000001",400L);
+        //        GTIDSet gtidSet = new GTIDSet("8c80613e-ac5b-11e5-b170-148044d6636f:7");
         GTidBinlogPosition pos = new GTidBinlogPosition("8c80613e-ac5b-11e5-b170-148044d6636f:7");
-        
+
         tran.dump(pos);
         while (true) {
             try {
                 ValidBinlogOutput value = tran.getBinlogOutput();
                 if (value.isRowEvent()) {
-                	BaseRowEvent row = (BaseRowEvent) value.getEvent();
+                    BaseRowEvent row = (BaseRowEvent) value.getEvent();
                     System.out.print("data:");
                     BinlogResultRow r = row.getRowList().get(0);
-                    if(r.getRowModifyType() == RowModifyTypeEnum.INSERT){
-                    	System.out.println("insert");
-                    	System.out.println(r.getAfterColumnValueList().get(0).getValue());
+                    if (r.getRowModifyType() == RowModifyTypeEnum.INSERT) {
+                        System.out.println("insert");
+                        System.out.println(r.getAfterColumnValueList().get(0).getValue());
                     }
-                    if(r.getRowModifyType() == RowModifyTypeEnum.DELETE){
-                    	System.out.println("delete");
-                    	System.out.println(r.getBeforeColumnValueList().get(0).getValue());
+                    if (r.getRowModifyType() == RowModifyTypeEnum.DELETE) {
+                        System.out.println("delete");
+                        System.out.println(r.getBeforeColumnValueList().get(0).getValue());
                     }
-                    
-                    if(r.getRowModifyType() == RowModifyTypeEnum.UPDATE){
-                    	System.out.println("update");
-                    	System.out.println(r.getBeforeColumnValueList().get(0).getValue());
-                    	System.out.println(r.getAfterColumnValueList().get(0).getValue());
+
+                    if (r.getRowModifyType() == RowModifyTypeEnum.UPDATE) {
+                        System.out.println("update");
+                        System.out.println(r.getBeforeColumnValueList().get(0).getValue());
+                        System.out.println(r.getAfterColumnValueList().get(0).getValue());
                     }
-                } 
-//                else if(value.getEventType() == ValidEventType.GTID){
-//                    GTidEvent gi = (GTidEvent) value.getEvent();
-//                    gtidSet.updateGTIDPoint(gi.getSidString(), gi.getGno());
-//                    System.out.print("gtid:");
-//                    System.out.println(gi.getGTidString());
-//                }
+                }
+                //                else if(value.getEventType() == ValidEventType.GTID){
+                //                    GTidEvent gi = (GTidEvent) value.getEvent();
+                //                    gtidSet.updateGTIDPoint(gi.getSidString(), gi.getGno());
+                //                    System.out.print("gtid:");
+                //                    System.out.println(gi.getGTidString());
+                //                }
             } catch (ReadTimeoutExp e) {
                 System.out.println("read again.");
                 // if(currentId == null){
                 // tran.dump(pos);
                 // }else{
                 // GTidBinlogPosition curpos = new
-                // GTidBinlogPosition(GTSidTool.convertSidString2DumpFormatBytes(currentId.getGTidString()),currentId.getGno(),65);
+                // GTidBinlogPosition(GTSidTool.convertSidString2DumpFormatBytes(currentId.getGTidString()),currentId
+                // .getGno(),65);
                 // tran.dump(curpos);
                 // }
             }
