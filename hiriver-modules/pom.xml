@@ -6,7 +6,7 @@
     <groupId>com.github.knightliao.extend</groupId>
     <artifactId>hiriver-modules</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.5-SNAPSHOT</version>
+    <version>1.2.6</version>
     <name>hiriver-modules</name>
     <url>http://maven.apache.org</url>
 
